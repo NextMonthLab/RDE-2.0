@@ -68,10 +68,34 @@ export class ExecutionEngine extends EventEmitter {
   /**
    * Subscribe to Agent Bridge Middleware approval events
    */
-  public subscribeToMiddlewareEvents(): void {
-    // This would typically subscribe to the middleware's event emitter
-    // For now, we'll set up the structure for event handling
-    console.log('[ExecutionEngine] Subscribed to Agent Bridge Middleware approval events');
+  public async subscribeToMiddlewareEvents(): Promise<void> {
+    try {
+      const { agentBridge } = await import('../../../middleware/agentBridge');
+      
+      // Subscribe to approved intent events
+      agentBridge.on('intent-approved', async (approvalEvent: any) => {
+        console.log(`[ExecutionEngine] Received approved intent: ${approvalEvent.intentId}`);
+        
+        // Convert to execution event format
+        const executionEvent: FileOperationEvent = {
+          intentId: approvalEvent.intentId,
+          operation: approvalEvent.operation,
+          targetPath: approvalEvent.targetPath,
+          content: approvalEvent.content,
+          newPath: approvalEvent.newPath,
+          timestamp: approvalEvent.timestamp,
+          userId: approvalEvent.userId,
+          sessionId: approvalEvent.sessionId,
+        };
+        
+        // Process the approved intent
+        await this.queueApprovedIntent(executionEvent);
+      });
+      
+      console.log('[ExecutionEngine] Successfully subscribed to Agent Bridge Middleware approval events');
+    } catch (error) {
+      console.error('[ExecutionEngine] Failed to subscribe to middleware events:', error);
+    }
   }
 
   /**
@@ -105,8 +129,32 @@ export class ExecutionEngine extends EventEmitter {
           throw new Error(`Unsupported operation: ${event.operation}`);
       }
 
-      // Log successful execution
+      // Log successful execution to system audit
       console.log(`[ExecutionEngine] ✅ Successfully executed ${event.operation} on ${event.targetPath} (${result.duration}ms)`);
+      
+      // Log to system audit via middleware
+      try {
+        const { agentBridge } = await import('../../../middleware/agentBridge');
+        const auditor = (agentBridge as any).auditor;
+        if (auditor) {
+          await auditor.logIntentProcessing(
+            { 
+              id: event.intentId,
+              type: 'file_operation',
+              operation: event.operation,
+              target: { path: event.targetPath, content: event.content },
+              timestamp: event.timestamp,
+              source: 'ai_chat',
+              priority: 'medium'
+            },
+            { isValid: true, appliedRules: [], errors: [], warnings: [], modifications: {}, requiresApproval: false },
+            result,
+            { sessionId: event.sessionId, userId: event.userId }
+          );
+        }
+      } catch (auditError) {
+        console.warn('[ExecutionEngine] Failed to log to system audit:', auditError);
+      }
       
       // Emit success event
       this.emit('execution-success', result);

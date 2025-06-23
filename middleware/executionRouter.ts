@@ -110,36 +110,16 @@ export class ExecutionRouter {
    * Delegate file operations to Execution Engine
    */
   private async delegateToExecutionEngine(intent: any, context: ExecutionContext, startTime: number): Promise<ExecutionResult> {
-    try {
-      const { executionEngine } = await import('../server/services/execution-engine/index');
-      
-      // Create execution event
-      const executionEvent = {
-        intentId: intent.id,
-        operation: intent.operation || 'create',
-        targetPath: intent.target?.file || intent.target?.path,
-        content: intent.target?.content,
-        newPath: intent.target?.newPath,
-        timestamp: new Date(),
-        userId: context.user?.id,
-        sessionId: 'middleware_session',
-      };
-
-      // Queue for execution
-      const result = await executionEngine.processApprovedIntent(executionEvent);
-      
-      return {
-        success: result.success,
-        intent,
-        output: result.success ? `File operation completed via Execution Engine` : undefined,
-        error: result.error,
-        duration: Date.now() - startTime,
-        affectedFiles: result.success ? [result.targetPath] : [],
-        sideEffects: result.success ? ['Executed via Execution Engine v1.0'] : [],
-      };
-    } catch (error) {
-      return this.createErrorResult(intent, `Execution Engine error: ${error.message}`, startTime);
-    }
+    // For file operations, return success immediately as they will be handled by Execution Engine
+    // The Agent Bridge will emit the approved event which the Execution Engine will process
+    return {
+      success: true,
+      intent,
+      output: `File operation approved - will be processed by Execution Engine`,
+      duration: Date.now() - startTime,
+      affectedFiles: [intent.target?.file || intent.target?.path],
+      sideEffects: ['Approved for Execution Engine processing'],
+    };
   }
 
   /**

@@ -9,8 +9,9 @@ import { GovernanceValidator } from './governanceValidator';
 import { ExecutionRouter } from './executionRouter';
 import { AuditLogger } from './auditLogger';
 import { nanoid } from 'nanoid';
+import { EventEmitter } from 'events';
 
-export class AgentBridge {
+export class AgentBridge extends EventEmitter {
   private static instance: AgentBridge;
   private config: AgentBridgeConfig;
   private validator: GovernanceValidator;
@@ -19,6 +20,7 @@ export class AgentBridge {
   private isInitialized = false;
 
   private constructor() {
+    super();
     this.config = this.getDefaultConfig();
     this.validator = new GovernanceValidator();
     this.router = ExecutionRouter.getInstance();
@@ -181,6 +183,21 @@ export class AgentBridge {
       };
 
       execution = await this.router.routeIntent(context);
+      
+      // Emit approved intent event for Execution Engine
+      if (execution.success && (intent.type === 'file_operation' || intent.type === 'code_generation')) {
+        this.emit('intent-approved', {
+          intentId: intent.id,
+          operation: intent.operation || 'create',
+          targetPath: intent.target?.file || intent.target?.path,
+          content: intent.target?.content,
+          newPath: intent.target?.newPath,
+          timestamp: new Date(),
+          userId: options.userId,
+          sessionId,
+          executionResult: execution,
+        });
+      }
     }
 
     // Step 3: Audit the processing
