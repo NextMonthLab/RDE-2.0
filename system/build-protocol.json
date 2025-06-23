@@ -1,0 +1,185 @@
+{
+  "version": "2.0",
+  "governance": {
+    "enabled": false,
+    "rules": [
+      {
+        "id": "default_file_size_limit",
+        "name": "File Size Limit",
+        "description": "Prevent creation of files larger than 5MB",
+        "intentTypes": ["file_operation"],
+        "conditions": [
+          {
+            "field": "target.content",
+            "operator": "greater_than",
+            "value": 5242880
+          }
+        ],
+        "action": "deny"
+      },
+      {
+        "id": "default_system_file_protection",
+        "name": "System File Protection",
+        "description": "Prevent modification of system configuration files",
+        "intentTypes": ["file_operation"],
+        "conditions": [
+          {
+            "field": "target.path",
+            "operator": "matches",
+            "value": "^/(etc|usr|var|bin|sbin)/"
+          }
+        ],
+        "action": "deny"
+      },
+      {
+        "id": "default_dangerous_commands",
+        "name": "Dangerous Command Protection",
+        "description": "Require approval for potentially dangerous terminal commands",
+        "intentTypes": ["terminal_command"],
+        "conditions": [
+          {
+            "field": "command",
+            "operator": "matches",
+            "value": "(rm|delete|format|shutdown|reboot|dd|mkfs)"
+          }
+        ],
+        "action": "require_approval"
+      },
+      {
+        "id": "default_package_installation",
+        "name": "Package Installation Approval",
+        "description": "Require approval for package installations",
+        "intentTypes": ["terminal_command"],
+        "conditions": [
+          {
+            "field": "command",
+            "operator": "contains",
+            "value": "npm install"
+          }
+        ],
+        "action": "require_approval"
+      },
+      {
+        "id": "default_external_service_approval",
+        "name": "External Service Approval",
+        "description": "Require approval for external service calls",
+        "intentTypes": ["external_service"],
+        "conditions": [],
+        "action": "require_approval"
+      },
+      {
+        "id": "default_working_directory",
+        "name": "Working Directory Restriction",
+        "description": "Restrict terminal commands to project directories",
+        "intentTypes": ["terminal_command"],
+        "conditions": [
+          {
+            "field": "workingDirectory",
+            "operator": "matches",
+            "value": "^/projects/"
+          }
+        ],
+        "action": "allow"
+      },
+      {
+        "id": "default_file_extension_validation",
+        "name": "File Extension Validation",
+        "description": "Ensure proper file extensions for code files",
+        "intentTypes": ["file_operation", "code_generation"],
+        "conditions": [
+          {
+            "field": "target.path",
+            "operator": "matches",
+            "value": "\\.(js|jsx|ts|tsx|css|html|json|md)$"
+          }
+        ],
+        "action": "allow"
+      }
+    ],
+    "settings": {
+      "requireApprovalThreshold": "medium",
+      "auditLevel": "full",
+      "autoApprove": ["low"]
+    }
+  },
+  "middleware": {
+    "intentParser": {
+      "enabled": false,
+      "confidence_threshold": 0.7
+    },
+    "executionRouter": {
+      "enabled": false,
+      "timeout": 30000
+    },
+    "auditLogger": {
+      "enabled": false,
+      "retention_days": 30
+    }
+  },
+  "skeleton": {
+    "enabled": false,
+    "auto_scaffold": false,
+    "frameworks": {
+      "react": {
+        "version": "18.x",
+        "typescript": true,
+        "routing": "wouter",
+        "state": "tanstack-query",
+        "ui": "shadcn"
+      },
+      "node": {
+        "version": "20.x",
+        "typescript": true,
+        "framework": "express",
+        "database": "postgresql"
+      }
+    }
+  },
+  "seo": {
+    "enabled": false,
+    "auto_optimize": false,
+    "strategies": {
+      "meta_tags": true,
+      "structured_data": true,
+      "sitemap": true,
+      "performance": true
+    }
+  },
+  "migration": {
+    "enabled": false,
+    "auto_migrate": false,
+    "supported_migrations": [
+      "react_class_to_hooks",
+      "javascript_to_typescript",
+      "css_to_tailwind",
+      "express_to_fastify"
+    ]
+  },
+  "deployment": {
+    "enabled": false,
+    "auto_deploy": false,
+    "targets": {
+      "replit": {
+        "auto_scale": true,
+        "environment": "production"
+      }
+    }
+  },
+  "security": {
+    "file_permissions": {
+      "max_file_size": "5MB",
+      "allowed_extensions": [".js", ".jsx", ".ts", ".tsx", ".css", ".html", ".json", ".md"],
+      "restricted_paths": ["/etc", "/usr", "/var", "/bin", "/sbin"]
+    },
+    "command_restrictions": {
+      "allowed_commands": ["npm", "node", "ls", "cd", "mkdir", "touch", "cat", "grep"],
+      "dangerous_commands": ["rm", "delete", "format", "shutdown", "reboot"],
+      "require_approval": ["npm install", "git clone", "curl", "wget"]
+    },
+    "network_access": {
+      "allow_external_apis": false,
+      "whitelist_domains": [],
+      "require_approval_for_new_domains": true
+    }
+  }
+}
