@@ -24,7 +24,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/files/*", async (req, res) => {
     try {
-      const filePath = "/" + req.params[0];
+      const filePath = "/" + (req.params as any)[0];
       const file = await storage.getFile(filePath);
       if (!file) {
         return res.status(404).json({ error: "File not found" });
@@ -41,7 +41,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const file = await fileService.createFileInStorage(
         fileData.name,
         fileData.path,
-        fileData.content,
+        fileData.content || "",
         fileData.type as "file" | "directory",
         fileData.parentPath || undefined
       );
@@ -53,7 +53,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.put("/api/files/*", async (req, res) => {
     try {
-      const filePath = "/" + req.params[0];
+      const filePath = "/" + (req.params as any)[0];
       const updates = req.body;
       const file = await fileService.updateFileInStorage(filePath, updates);
       if (!file) {
@@ -67,7 +67,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.delete("/api/files/*", async (req, res) => {
     try {
-      const filePath = "/" + req.params[0];
+      const filePath = "/" + (req.params as any)[0];
       const success = await fileService.deleteFileInStorage(filePath);
       if (!success) {
         return res.status(404).json({ error: "File not found" });
@@ -146,7 +146,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         switch (message.type) {
           case 'terminal:create':
             terminalSessionId = message.sessionId || `session_${Date.now()}`;
-            const session = terminalService.createSession(terminalSessionId, message.cwd);
+            const session = terminalService.createSession(terminalSessionId, message.cwd || process.cwd());
             
             // Forward stdout
             session.process.stdout?.on('data', (data) => {

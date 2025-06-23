@@ -227,6 +227,8 @@ code {
         id: this.currentFileId++,
         createdAt: new Date(),
         updatedAt: new Date(),
+        content: file.content || "",
+        parentPath: file.parentPath || null,
       };
       this.files.set(file.path, fileWithId);
     });
@@ -265,6 +267,8 @@ code {
       id: this.currentFileId++,
       createdAt: new Date(),
       updatedAt: new Date(),
+      content: file.content || "",
+      parentPath: file.parentPath || null,
     };
     this.files.set(file.path, fileWithId);
     return fileWithId;
