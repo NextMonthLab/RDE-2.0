@@ -127,23 +127,23 @@ export default function RDEPage() {
         onClose={() => setShowMiddleware(false)} 
       />
 
-      {/* Floating Action Buttons */}
-      <div className="fixed bottom-6 right-6 flex flex-col space-y-3 z-40">
+      {/* Floating Action Buttons - Positioned to not block chat */}
+      <div className="fixed bottom-6 right-80 flex flex-col space-y-3 z-40">
         <Button
           onClick={() => setShowMiddleware(!showMiddleware)}
-          className="bg-purple-600 hover:bg-purple-700 text-white p-3 rounded-full shadow-lg"
-          size="icon"
+          className="bg-purple-600 hover:bg-purple-700 text-white p-2 rounded-full shadow-lg"
+          size="sm"
           title="Middleware Status"
         >
-          <Shield className="w-5 h-5" />
+          <Shield className="w-4 h-4" />
         </Button>
         <Button
           onClick={() => setShowPreview(!showPreview)}
-          className="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg"
-          size="icon"
+          className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full shadow-lg"
+          size="sm"
           title="Live Preview"
         >
-          <Eye className="w-5 h-5" />
+          <Eye className="w-4 h-4" />
         </Button>
       </div>
     </div>
