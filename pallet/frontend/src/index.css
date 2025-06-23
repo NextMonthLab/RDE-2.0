@@ -1,0 +1,161 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 94.1%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Monaco Editor Styles */
+.monaco-editor {
+  --vscode-editor-background: hsl(var(--background));
+  --vscode-editor-foreground: hsl(var(--foreground));
+}
+
+/* Terminal Styles */
+.xterm {
+  padding: 8px;
+}
+
+.xterm-viewport {
+  background-color: transparent !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--accent-foreground));
+}
+
+/* File Explorer Tree */
+.file-tree-item {
+  @apply flex items-center gap-2 px-2 py-1 text-sm hover:bg-accent rounded-sm cursor-pointer;
+}
+
+.file-tree-item.selected {
+  @apply bg-primary text-primary-foreground;
+}
+
+.file-tree-item.folder {
+  @apply font-medium;
+}
+
+/* Chat Message Styles */
+.chat-message {
+  @apply mb-4 p-3 rounded-lg;
+}
+
+.chat-message.user {
+  @apply bg-primary text-primary-foreground ml-8;
+}
+
+.chat-message.assistant {
+  @apply bg-muted mr-8;
+}
+
+.chat-message.system {
+  @apply bg-destructive/10 text-destructive text-center text-sm;
+}
+
+/* Code Syntax Highlighting */
+.code-block {
+  @apply bg-muted p-4 rounded-lg font-mono text-sm overflow-x-auto;
+}
+
+/* Loading States */
+.loading-spinner {
+  @apply animate-spin rounded-full border-2 border-primary border-t-transparent;
+}
+
+/* Middleware Dashboard */
+.middleware-status {
+  @apply flex items-center gap-2 text-sm;
+}
+
+.middleware-status.active {
+  @apply text-green-600;
+}
+
+.middleware-status.inactive {
+  @apply text-red-600;
+}
+
+.middleware-status.warning {
+  @apply text-yellow-600;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .resizable-panel-group {
+    flex-direction: column !important;
+  }
+  
+  .file-explorer {
+    @apply h-32;
+  }
+}
