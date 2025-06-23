@@ -50,6 +50,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     console.error("[Routes] Failed to initialize Agent Bridge Middleware:", error);
   }
 
+  // Initialize Execution Engine
+  try {
+    const { executionEngine } = await import('./services/execution-engine/index');
+    await executionEngine.initialize();
+    executionEngine.subscribeToMiddlewareEvents();
+    console.log("[Routes] Execution Engine v1.0 initialized successfully");
+  } catch (error) {
+    console.error("[Routes] Failed to initialize Execution Engine:", error);
+  }
+
   // File operations
   app.get("/api/files", async (req, res) => {
     try {

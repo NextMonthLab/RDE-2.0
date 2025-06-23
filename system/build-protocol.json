@@ -109,70 +109,13 @@
           }
         ],
         "action": "allow"
-      },
-      {
-        "id": "semi_auto_file_creation",
-        "name": "Auto-Approve File Creation",
-        "description": "Automatically approve non-destructive file creation operations",
-        "intentTypes": [
-          "file_operation",
-          "code_generation"
-        ],
-        "conditions": [
-          {
-            "field": "operation",
-            "operator": "in",
-            "value": ["create", "update"]
-          }
-        ],
-        "action": "allow"
-      },
-      {
-        "id": "semi_auto_file_deletion_approval",
-        "name": "Require Approval for File Deletion",
-        "description": "Always require approval for file deletion operations",
-        "intentTypes": [
-          "file_operation"
-        ],
-        "conditions": [
-          {
-            "field": "operation",
-            "operator": "equals",
-            "value": "delete"
-          }
-        ],
-        "action": "require_approval"
-      },
-      {
-        "id": "semi_auto_schema_changes",
-        "name": "Require Approval for Schema Changes",
-        "description": "Require approval for database schema and configuration changes",
-        "intentTypes": [
-          "file_operation"
-        ],
-        "conditions": [
-          {
-            "field": "target.path",
-            "operator": "matches",
-            "value": "(schema|config|migration|drizzle|package\\.json)"
-          }
-        ],
-        "action": "require_approval"
       }
     ],
     "settings": {
       "requireApprovalThreshold": "medium",
       "auditLevel": "full",
       "autoApprove": [
-        "low",
-        "file_creation",
-        "code_generation"
-      ],
-      "mode": "semi_automatic",
-      "auto_approve_patterns": [
-        "create_safe_files",
-        "update_existing_files",
-        "generate_code"
+        "low"
       ]
     }
   },

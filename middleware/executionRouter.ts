@@ -78,15 +78,15 @@ export class ExecutionRouter {
     const modifiedIntent = this.applyModifications(intent, validation.modifications);
 
     try {
+      // For file operations, delegate to Execution Engine
+      if (modifiedIntent.type === 'file_operation' || modifiedIntent.type === 'code_generation') {
+        return await this.delegateToExecutionEngine(modifiedIntent, context, startTime);
+      }
+
+      // Handle other intent types directly
       switch (modifiedIntent.type) {
-        case 'file_operation':
-          return await this.executeFileOperation(modifiedIntent, context, startTime);
-        
         case 'terminal_command':
           return await this.executeTerminalCommand(modifiedIntent, context, startTime);
-        
-        case 'code_generation':
-          return await this.executeCodeGeneration(modifiedIntent, context, startTime);
         
         case 'external_service':
           return await this.executeExternalService(modifiedIntent, context, startTime);
@@ -103,6 +103,42 @@ export class ExecutionRouter {
       }
     } catch (error) {
       return this.createErrorResult(intent, error.message, startTime);
+    }
+  }
+
+  /**
+   * Delegate file operations to Execution Engine
+   */
+  private async delegateToExecutionEngine(intent: any, context: ExecutionContext, startTime: number): Promise<ExecutionResult> {
+    try {
+      const { executionEngine } = await import('../server/services/execution-engine/index');
+      
+      // Create execution event
+      const executionEvent = {
+        intentId: intent.id,
+        operation: intent.operation || 'create',
+        targetPath: intent.target?.file || intent.target?.path,
+        content: intent.target?.content,
+        newPath: intent.target?.newPath,
+        timestamp: new Date(),
+        userId: context.user?.id,
+        sessionId: 'middleware_session',
+      };
+
+      // Queue for execution
+      const result = await executionEngine.processApprovedIntent(executionEvent);
+      
+      return {
+        success: result.success,
+        intent,
+        output: result.success ? `File operation completed via Execution Engine` : undefined,
+        error: result.error,
+        duration: Date.now() - startTime,
+        affectedFiles: result.success ? [result.targetPath] : [],
+        sideEffects: result.success ? ['Executed via Execution Engine v1.0'] : [],
+      };
+    } catch (error) {
+      return this.createErrorResult(intent, `Execution Engine error: ${error.message}`, startTime);
     }
   }
 
