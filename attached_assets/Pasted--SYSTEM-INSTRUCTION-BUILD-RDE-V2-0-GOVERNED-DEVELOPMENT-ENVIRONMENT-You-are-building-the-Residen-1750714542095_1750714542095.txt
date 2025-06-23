@@ -1,0 +1,61 @@
+🧠 SYSTEM INSTRUCTION: BUILD RDE V2.0 GOVERNED DEVELOPMENT ENVIRONMENT
+
+You are building the Resident Development Environment (RDE) version 2.0 with full foundational architecture. This is NOT a direct execution agent — this is a scaffold for an AI-governed development environment.
+
+✅ Core Features Required:
+
+1️⃣ File Explorer
+- Real-time file tree
+- Create / delete / rename files and folders
+- Expandable, collapsible structure
+
+2️⃣ File Editor
+- Monaco editor interface
+- Syntax highlighting for multiple languages
+- Real-time file save and update tracking
+
+3️⃣ Terminal
+- Fully operational shell interface
+- Real-time output streaming
+- WebSocket-based backend execution
+
+4️⃣ Chat Interface
+- Claude-powered conversational interface
+- Supports prompt-based code generation requests
+- Integrated with the intent system, but DO NOT directly execute any system commands yet
+
+5️⃣ Preview Window
+- Live rendering of generated frontend applications
+- Hot reloading for React/Vite apps
+- Isolated from system failures
+
+✅ Architectural Rules:
+
+- This scaffold should NOT execute code directly from AI. AI outputs are intents only.
+- File writes, terminal commands, and deployments must eventually route through the middleware (to be scaffolded next).
+- Build the full frontend interface but delay any middleware activation until after verification.
+- Generate clean placeholder React/Vite fullstack template as default project.
+
+✅ Directory Structure:
+
+- /frontend (RDE interface)
+- /backend (API server for file system, terminal, chat backend, intent parsing)
+- /middleware (leave empty for now, will scaffold middleware in next step)
+- /projects (where AI-created apps will reside)
+
+✅ This is a clean foundation for full AI-governed architecture.
+
+✅ DO NOT reintroduce any chat persistence bugs from previous version. Keep chat fully stateless for now.
+
+✅ DO NOT hardwire system execution into chat outputs. Prepare for middleware insertion.
+
+✅ Once scaffold is complete, confirm:
+
+- File Explorer is fully operational
+- Terminal is fully operational
+- Preview window works for default app
+- Chat interface is live
+
+✅ Await further middleware scaffolding instructions once base scaffold verified.
+
+This is Resident Development Environment v2.0 Bootstrap.
