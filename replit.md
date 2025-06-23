@@ -104,20 +104,21 @@ RDE v2.0 is a comprehensive web-based development environment built with Node.js
 
 ## Recent Changes
 
-### June 23, 2025 - Agent Bridge Middleware v2.0 ACTIVATED - Live Governance Mode
+### June 23, 2025 - Agent Bridge Middleware v2.0 ACTIVATED - Semi-Automatic Mode
 
-✓ **Full AI Governance System Now Active**
-- Agent Bridge Middleware fully activated and integrated into chat interface
-- All AI-generated intents now flow through validation and execution pipeline
-- Real-time governance enforcement with audit logging enabled
-- Middleware status dashboard added to RDE interface
+✓ **Semi-Automatic AI Governance System Active**
+- Agent Bridge Middleware operating in semi-automatic mode
+- Auto-approval enabled for non-destructive file creation and code generation
+- Manual approval required for deletions, schema changes, and dangerous commands
+- Real-time governance enforcement with full audit logging enabled
+- Middleware status dashboard for monitoring and approval management
 
-✓ **Live Governance Features**
+✓ **Semi-Automatic Governance Features**
+- Automatic approval: File creation, updates, code generation
+- Manual approval: File deletions, schema changes, dangerous terminal commands
 - Intent parsing extracts structured actions from AI chat responses
-- Governance validator enforces rules from build protocol configuration
-- Execution router safely handles validated file operations and commands
-- Audit logger tracks all AI actions with complete accountability
-- Approval workflow for restricted operations
+- Execution router handles validated operations with appropriate approval workflows
+- Complete audit trail for all AI actions with retention and analysis
 
 ✓ **Core Components Implemented**
 - `intentParser.ts` - Extracts structured intents from AI chat outputs
