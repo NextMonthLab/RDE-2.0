@@ -17,23 +17,36 @@ export class ChatService {
     });
   }
 
-  async processMessage(message: string, context?: { files?: string[], currentFile?: string }): Promise<string> {
+  async processMessage(message: string, context?: { files?: string[], currentFile?: string, middlewareResult?: any }): Promise<string> {
     try {
-      const systemPrompt = `You are an AI assistant for the Resident Development Environment (RDE v2.0). 
-You help developers with code generation, debugging, and development tasks. 
+      const middlewareInfo = context?.middlewareResult ? `
+
+Middleware Processing Results:
+- Total intents parsed: ${context.middlewareResult.summary.totalIntents}
+- Successfully executed: ${context.middlewareResult.summary.executedIntents}
+- Rejected by governance: ${context.middlewareResult.summary.rejectedIntents}
+- Pending approval: ${context.middlewareResult.summary.pendingApprovals}` : '';
+
+      const systemPrompt = `You are an AI assistant for the Resident Development Environment (RDE v2.0) with Agent Bridge Middleware. 
+You help developers with code generation, debugging, and development tasks through a governed execution system.
 
 Current context:
 - Working directory: ${context?.currentFile || 'No file selected'}
-- Available files: ${context?.files?.join(', ') || 'None'}
+- Available files: ${context?.files?.join(', ') || 'None'}${middlewareInfo}
 
-Important: You provide code suggestions and explanations, but you do NOT directly execute code or system commands. 
-Your responses are intents that will be processed by the middleware system.
+IMPORTANT GOVERNANCE MODEL:
+- Your responses flow through Agent Bridge Middleware for validation and execution
+- All file operations, terminal commands, and system actions are automatically processed through governance rules
+- You can provide direct guidance while the middleware handles safe execution
+- When intents are rejected, explain alternative approaches that comply with governance rules
+- When intents require approval, inform the user about the approval process
 
-When suggesting code changes:
-1. Be specific about file paths and locations
-2. Provide complete, working code snippets
-3. Explain the changes clearly
-4. Suggest testing approaches`;
+Response Guidelines:
+1. Provide clear, actionable development guidance
+2. Include specific file paths and complete code examples
+3. Explain the reasoning behind your suggestions
+4. Reference middleware feedback when applicable
+5. Guide users through governance requirements when needed`;
 
       const response = await this.anthropic.messages.create({
         model: DEFAULT_MODEL_STR,

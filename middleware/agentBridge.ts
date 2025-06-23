@@ -365,10 +365,10 @@ export class AgentBridge {
    */
   private getDefaultConfig(): AgentBridgeConfig {
     return {
-      enableIntentParsing: false, // Disabled by default - requires manual activation
-      enableGovernance: false,    // Disabled by default - requires manual activation
-      enableExecution: false,     // Disabled by default - requires manual activation
-      enableAudit: false,         // Disabled by default - requires manual activation
+      enableIntentParsing: true,  // Now enabled for live governance
+      enableGovernance: true,     // Now enabled for live governance  
+      enableExecution: true,      // Now enabled for live governance
+      enableAudit: true,          // Now enabled for live governance
       governanceRulesPath: '/system/build-protocol.json',
       auditLogPath: '/system/audit.log',
       maxConcurrentIntents: 3,

@@ -5,14 +5,16 @@ import MonacoEditor from "@/components/monaco-editor";
 import Terminal from "@/components/terminal";
 import ChatInterface from "@/components/chat-interface";
 import PreviewWindow from "@/components/preview-window";
+import MiddlewareStatus from "@/components/middleware-status";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Eye, Layout, FileText, Terminal as TerminalIcon, MessageSquare } from "lucide-react";
+import { Eye, Layout, FileText, Terminal as TerminalIcon, MessageSquare, Shield } from "lucide-react";
 
 export default function RDEPage() {
   const [selectedFile, setSelectedFile] = useState<string | null>("/projects/default-app/src/App.jsx");
   const [openTabs, setOpenTabs] = useState<string[]>(["/projects/default-app/src/App.jsx"]);
   const [showPreview, setShowPreview] = useState(false);
+  const [showMiddleware, setShowMiddleware] = useState(false);
 
   const handleFileSelect = (filePath: string) => {
     setSelectedFile(filePath);
@@ -56,8 +58,20 @@ export default function RDEPage() {
             <div className="w-2 h-2 bg-green-500 rounded-full"></div>
             <span>Connected</span>
           </div>
+          <div className="flex items-center space-x-1">
+            <Shield className="w-3 h-3 text-blue-400" />
+            <span>AI Governance Active</span>
+          </div>
           <span>React/Vite Project</span>
           <span>JavaScript</span>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-xs hover:rde-bg-accent"
+            onClick={() => setShowMiddleware(true)}
+          >
+            Middleware Status
+          </Button>
         </div>
       </div>
 
@@ -107,14 +121,31 @@ export default function RDEPage() {
         <PreviewWindow onClose={() => setShowPreview(false)} />
       )}
 
-      {/* Floating Preview Button */}
-      <Button
-        onClick={() => setShowPreview(!showPreview)}
-        className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg z-40"
-        size="icon"
-      >
-        <Eye className="w-5 h-5" />
-      </Button>
+      {/* Middleware Status Window */}
+      <MiddlewareStatus 
+        isVisible={showMiddleware} 
+        onClose={() => setShowMiddleware(false)} 
+      />
+
+      {/* Floating Action Buttons */}
+      <div className="fixed bottom-6 right-6 flex flex-col space-y-3 z-40">
+        <Button
+          onClick={() => setShowMiddleware(!showMiddleware)}
+          className="bg-purple-600 hover:bg-purple-700 text-white p-3 rounded-full shadow-lg"
+          size="icon"
+          title="Middleware Status"
+        >
+          <Shield className="w-5 h-5" />
+        </Button>
+        <Button
+          onClick={() => setShowPreview(!showPreview)}
+          className="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg"
+          size="icon"
+          title="Live Preview"
+        >
+          <Eye className="w-5 h-5" />
+        </Button>
+      </div>
     </div>
   );
 }

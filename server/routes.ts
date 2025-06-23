@@ -7,9 +7,48 @@ import { terminalService } from "./services/terminalService";
 import { chatService } from "./services/chatService";
 import { insertFileSchema, insertChatMessageSchema } from "@shared/schema";
 
+// Helper function to create middleware summary
+function createMiddlewareSummary(middlewareResult: any): string {
+  const { summary } = middlewareResult;
+  
+  if (summary.totalIntents === 0) {
+    return "";
+  }
+
+  let summaryText = "\n🤖 **Middleware Processing Summary:**\n";
+  
+  if (summary.executedIntents > 0) {
+    summaryText += `✅ Executed ${summary.executedIntents} intent(s) successfully\n`;
+  }
+  
+  if (summary.rejectedIntents > 0) {
+    summaryText += `❌ Rejected ${summary.rejectedIntents} intent(s) due to governance rules\n`;
+  }
+  
+  if (summary.pendingApprovals > 0) {
+    summaryText += `⏳ ${summary.pendingApprovals} intent(s) require manual approval\n`;
+  }
+
+  return summaryText;
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
   // Initialize file service
   await fileService.initializeProjectsDirectory();
+
+  // Initialize Agent Bridge Middleware
+  try {
+    const { agentBridge } = await import('../middleware/agentBridge');
+    await agentBridge.initialize({
+      enableIntentParsing: true,
+      enableGovernance: true, 
+      enableExecution: true,
+      enableAudit: true,
+    });
+    console.log("[Routes] Agent Bridge Middleware activated successfully");
+  } catch (error) {
+    console.error("[Routes] Failed to initialize Agent Bridge Middleware:", error);
+  }
 
   // File operations
   app.get("/api/files", async (req, res) => {

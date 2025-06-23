@@ -1,7 +1,7 @@
 {
   "version": "2.0",
   "governance": {
-    "enabled": false,
+    "enabled": true,
     "rules": [
       {
         "id": "default_file_size_limit",
@@ -104,15 +104,15 @@
   },
   "middleware": {
     "intentParser": {
-      "enabled": false,
+      "enabled": true,
       "confidence_threshold": 0.7
     },
     "executionRouter": {
-      "enabled": false,
+      "enabled": true,
       "timeout": 30000
     },
     "auditLogger": {
-      "enabled": false,
+      "enabled": true,
       "retention_days": 30
     }
   },
