@@ -1,0 +1,62 @@
+🧠 HETZNER DEPLOYMENT PALLET REQUEST
+
+Please scaffold a production-grade Hetzner Deployment Pallet for RDE v2.0 with full AI-Governed Middleware architecture:
+
+1️⃣ Project Structure (Monorepo Compliant)
+- /pallet/
+  - /frontend/ — React + TypeScript + Vite frontend (RDE UI)
+  - /backend/ — Node.js + TypeScript backend services
+    - /services/middleware/ — Agent Bridge Middleware v2.0 (intent parsing, governance, routing)
+    - /services/execution-engine/ — Execution Engine v1.0 (event-driven file operations)
+  - /system/
+    - /build-protocol.json — Build governance protocol file
+    - /audit/ — Audit logs directory (persistent logging)
+
+2️⃣ Frontend Requirements:
+- React 18 + TypeScript
+- Monaco Editor
+- File Explorer (live file tree)
+- WebSocket Terminal Interface
+- AI Chat Interface (Claude Agent)
+- Project Preview Window
+- Build Protocol editor interface
+
+3️⃣ Backend Requirements:
+- Node.js + TypeScript microservice architecture
+- Middleware layer fully intercepting AI intents
+- EventEmitter based routing between Middleware and Execution Engine
+- Full audit logging with 30-day retention
+- Approval Queue system scaffolded for manual reviews
+- Governance rules fully enforced for semi-automatic mode
+
+4️⃣ Dockerization:
+- Full multi-stage Dockerfile for clean production builds
+- Use absolute file paths for all serveStatic operations
+- Ensure pre-compilation of TypeScript prior to container build (strict compile pattern)
+- No devDependencies in production containers
+- Persistent volume mapping for /system/audit logs
+
+5️⃣ Environment Variable Handling:
+- .env file support for secrets and keys
+- Fail-safe bootstrapping if required env vars are missing
+
+6️⃣ Port Configuration:
+- Default external port 5000 (compliant with existing Hetzner VPS standards)
+
+7️⃣ Compliance with Palletizer Lessons:
+- Full dist/ precompiled directory structure for production containers
+- Avoid any dynamic path resolution inside Docker
+- No relative imports that break Docker context boundaries
+- Container entry point: `node dist/server/index.js` with clean dist separation
+
+8️⃣ Self-Diagnostic Endpoints:
+- /api/middleware/status
+- /api/middleware/audit
+- /api/middleware/approvals
+- /api/middleware/config
+
+9️⃣ RDE Naming Standardization:
+- Internal project name: RDEv2_Hetzner_Pallet
+- Artifact ID tagging for future Pallet Manager registry integration
+
+Confirm once scaffold is complete. Do not execute builds yet — prepare codebase structure first.

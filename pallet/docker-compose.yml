@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  rdev2-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: rdev2-hetzner-pallet
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - HOST=0.0.0.0
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - MIDDLEWARE_ENABLE_GOVERNANCE=true
+      - MIDDLEWARE_ENABLE_EXECUTION=true
+      - MIDDLEWARE_ENABLE_AUDIT=true
+      - PROJECTS_PATH=/app/projects
+      - AUDIT_LOG_PATH=/app/system/audit
+      - BUILD_PROTOCOL_PATH=/app/system/build-protocol.json
+    volumes:
+      - audit_logs:/app/system/audit
+      - project_files:/app/projects
+      - ./system/build-protocol.json:/app/system/build-protocol.json:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:5000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  audit_logs:
+    driver: local
+  project_files:
+    driver: local
+
+networks:
+  default:
+    name: rdev2-network

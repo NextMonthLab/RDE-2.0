@@ -1,0 +1,49 @@
+{
+  "name": "rdev2-hetzner-pallet",
+  "version": "2.0.0",
+  "description": "Production-grade Hetzner Deployment Pallet for RDE v2.0 with AI-Governed Middleware",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && npm run build",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "start": "cd backend && npm start",
+    "test": "npm run test:frontend && npm run test:backend",
+    "test:frontend": "cd frontend && npm run test",
+    "test:backend": "cd backend && npm run test",
+    "clean": "rm -rf frontend/dist backend/dist",
+    "docker:build": "docker build -t rdev2-hetzner-pallet:latest .",
+    "docker:run": "docker run -p 5000:5000 -v $(pwd)/system/audit:/app/system/audit rdev2-hetzner-pallet:latest"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "keywords": [
+    "rde",
+    "development-environment",
+    "ai-governed",
+    "hetzner",
+    "deployment",
+    "pallet"
+  ],
+  "author": "RDE Team",
+  "license": "MIT",
+  "metadata": {
+    "projectName": "RDEv2_Hetzner_Pallet",
+    "artifactId": "rdev2-hetzner-pallet",
+    "palletVersion": "2.0.0",
+    "middlewareVersion": "2.0.0",
+    "executionEngineVersion": "1.0.0"
+  }
+}

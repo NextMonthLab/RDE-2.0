@@ -1,0 +1,147 @@
+{
+  "version": "2.0.0",
+  "metadata": {
+    "name": "RDE v2.0 Build Protocol",
+    "description": "AI-Governed development environment build protocol with security and governance rules",
+    "createdAt": "2025-06-23T22:00:00.000Z",
+    "updatedAt": "2025-06-23T22:00:00.000Z"
+  },
+  "governance": {
+    "mode": "semi-automatic",
+    "defaultAction": "allow",
+    "requireApprovalFor": [
+      "file_deletion",
+      "directory_deletion", 
+      "system_commands",
+      "package_installation",
+      "schema_changes"
+    ]
+  },
+  "rules": [
+    {
+      "id": "allow-safe-file-operations",
+      "name": "Allow Safe File Operations",
+      "description": "Automatically approve creation and updates of safe file types",
+      "intentTypes": ["file_operation"],
+      "conditions": [
+        {
+          "field": "operation",
+          "operator": "in",
+          "value": ["create", "update"]
+        },
+        {
+          "field": "target.path",
+          "operator": "matches",
+          "value": "\\.(js|jsx|ts|tsx|json|md|txt|css|html)$"
+        }
+      ],
+      "action": "allow"
+    },
+    {
+      "id": "require-approval-deletions",
+      "name": "Require Approval for Deletions",
+      "description": "All file and directory deletions require manual approval",
+      "intentTypes": ["file_operation"],
+      "conditions": [
+        {
+          "field": "operation",
+          "operator": "equals",
+          "value": "delete"
+        }
+      ],
+      "action": "require_approval"
+    },
+    {
+      "id": "restrict-system-files",
+      "name": "Restrict System File Access",
+      "description": "Prevent access to system configuration files",
+      "intentTypes": ["file_operation"],
+      "conditions": [
+        {
+          "field": "target.path",
+          "operator": "matches",
+          "value": "^(\\.|/etc/|/usr/|/var/|/sys/|/proc/)"
+        }
+      ],
+      "action": "deny"
+    },
+    {
+      "id": "sandbox-project-files",
+      "name": "Sandbox Project Files",
+      "description": "Restrict file operations to project directory",
+      "intentTypes": ["file_operation"],
+      "conditions": [
+        {
+          "field": "target.path",
+          "operator": "matches",
+          "value": "^(?!/app/projects/)"
+        }
+      ],
+      "action": "modify",
+      "modifications": {
+        "target.path": "/app/projects/${target.path}"
+      }
+    },
+    {
+      "id": "approve-code-generation",
+      "name": "Approve Code Generation",
+      "description": "Allow AI-driven code generation for supported languages",
+      "intentTypes": ["code_generation"],
+      "conditions": [
+        {
+          "field": "requirements.language",
+          "operator": "in",
+          "value": ["javascript", "typescript", "jsx", "tsx", "json", "css", "html"]
+        }
+      ],
+      "action": "allow"
+    },
+    {
+      "id": "require-approval-commands",
+      "name": "Require Approval for Terminal Commands",
+      "description": "All terminal commands require approval except safe operations",
+      "intentTypes": ["terminal_command"],
+      "conditions": [
+        {
+          "field": "command",
+          "operator": "matches",
+          "value": "^(?!(ls|pwd|cat|echo|node|npm run)\\s)"
+        }
+      ],
+      "action": "require_approval"
+    },
+    {
+      "id": "limit-file-size",
+      "name": "Limit File Size",
+      "description": "Restrict file operations to reasonable sizes",
+      "intentTypes": ["file_operation"],
+      "conditions": [
+        {
+          "field": "target.content.length",
+          "operator": "greater_than",
+          "value": 1048576
+        }
+      ],
+      "action": "deny"
+    }
+  ],
+  "limits": {
+    "maxFileSize": 10485760,
+    "maxFilesPerIntent": 10,
+    "maxIntentsPerMinute": 30,
+    "allowedFileExtensions": [
+      ".js", ".jsx", ".ts", ".tsx", ".json", ".md", ".txt", 
+      ".css", ".scss", ".html", ".yml", ".yaml", ".env"
+    ],
+    "restrictedPaths": [
+      "/etc", "/usr", "/var", "/sys", "/proc", "/root"
+    ]
+  },
+  "audit": {
+    "enabled": true,
+    "retentionDays": 30,
+    "logLevel": "info",
+    "includeContent": false,
+    "trackFailures": true
+  }
+}
