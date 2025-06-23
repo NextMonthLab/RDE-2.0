@@ -12,7 +12,7 @@ export class GovernanceValidator {
   private rulesPath: string;
   private lastRulesUpdate: Date = new Date(0);
 
-  constructor(rulesPath: string = '/system/build-protocol.json') {
+  constructor(rulesPath: string = './system/build-protocol.json') {
     this.rulesPath = rulesPath;
   }
 

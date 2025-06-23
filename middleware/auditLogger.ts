@@ -15,7 +15,7 @@ export class AuditLogger {
   private flushInterval = 30000; // 30 seconds
   private retentionDays = 30;
 
-  private constructor(logPath: string = '/system/audit.log') {
+  private constructor(logPath: string = './system/audit.log') {
     this.logPath = logPath;
     this.startFlushTimer();
   }

@@ -369,8 +369,8 @@ export class AgentBridge {
       enableGovernance: true,     // Now enabled for live governance  
       enableExecution: true,      // Now enabled for live governance
       enableAudit: true,          // Now enabled for live governance
-      governanceRulesPath: '/system/build-protocol.json',
-      auditLogPath: '/system/audit.log',
+      governanceRulesPath: './system/build-protocol.json',
+      auditLogPath: './system/audit.log',
       maxConcurrentIntents: 3,
       intentTimeout: 30000,
     };
