@@ -4,9 +4,9 @@
  */
 
 import { Intent, ValidationResult, ExecutionContext, ExecutionResult } from './types';
-import { fileService } from '../server/services/fileService';
-import { terminalService } from '../server/services/terminalService';
-import { chatService } from '../server/services/chatService';
+import { fileService } from '../server/src/services/fileService.js';
+import { terminalService } from '../server/src/services/terminalService.js';
+import { chatService } from '../server/src/services/chatService.js';
 import * as fs from 'fs/promises';
 
 export class ExecutionRouter {

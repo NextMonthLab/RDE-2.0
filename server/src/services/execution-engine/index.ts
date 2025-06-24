@@ -70,7 +70,7 @@ export class ExecutionEngine extends EventEmitter {
    */
   public async subscribeToMiddlewareEvents(): Promise<void> {
     try {
-      const { agentBridge } = await import('../../../middleware/agentBridge');
+      const { agentBridge } = await import('../../../../middleware/agentBridge.js');
       
       // Subscribe to approved intent events
       agentBridge.on('intent-approved', async (approvalEvent: any) => {
@@ -134,7 +134,7 @@ export class ExecutionEngine extends EventEmitter {
       
       // Log to system audit via middleware
       try {
-        const { agentBridge } = await import('../../../middleware/agentBridge');
+        const { agentBridge } = await import('../../../../middleware/agentBridge.js');
         const auditor = (agentBridge as any).auditor;
         if (auditor) {
           await auditor.logIntentProcessing(

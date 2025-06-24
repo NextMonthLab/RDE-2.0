@@ -38,7 +38,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Initialize Agent Bridge Middleware
   try {
-    const { agentBridge } = await import('../middleware/agentBridge');
+    const { agentBridge } = await import('../../middleware/agentBridge.js');
     await agentBridge.initialize({
       enableIntentParsing: true,
       enableGovernance: true, 
