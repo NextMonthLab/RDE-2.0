@@ -146,7 +146,7 @@ export default function ChatInterface({ currentFile }: ChatInterfaceProps) {
             <div className="text-sm rde-text-secondary">Loading messages...</div>
           )}
           
-          {messages.length === 0 && !isLoading && (
+          {Array.isArray(messages) && messages.length === 0 && !isLoading && (
             <div className="flex space-x-3">
               <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
                 <MessageSquare className="w-3 h-3 text-white" />
@@ -167,7 +167,7 @@ export default function ChatInterface({ currentFile }: ChatInterfaceProps) {
             </div>
           )}
           
-          {messages.map((msg: ChatMessage) => (
+          {Array.isArray(messages) && messages.map((msg: ChatMessage) => (
             <div key={msg.id} className={`flex space-x-3 ${msg.role === "user" ? "justify-end" : ""}`}>
               {msg.role === "assistant" && (
                 <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
@@ -186,7 +186,7 @@ export default function ChatInterface({ currentFile }: ChatInterfaceProps) {
                 <div className={`text-xs rde-text-secondary mt-1 ${
                   msg.role === "user" ? "text-right" : ""
                 }`}>
-                  {formatTimestamp(msg.timestamp)}
+                  {msg.timestamp ? formatTimestamp(msg.timestamp) : 'Just now'}
                 </div>
               </div>
               

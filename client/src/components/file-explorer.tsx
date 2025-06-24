@@ -220,7 +220,7 @@ export default function FileExplorer({ onFileSelect }: FileExplorerProps) {
     );
   };
 
-  const fileTree = buildFileTree(files);
+  const fileTree = buildFileTree(Array.isArray(files) ? files : []);
 
   return (
     <div className="w-full h-full rde-bg-secondary border-r rde-border flex flex-col">

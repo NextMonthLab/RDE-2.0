@@ -65,7 +65,7 @@ export default function MonacoEditor({ selectedFile, openTabs, onFileSelect, onC
         editorRef.current.dispose();
       }
 
-      const content = editorContent[selectedFile] || fileData?.content || "";
+      const content = editorContent[selectedFile] || (fileData as any)?.content || "";
       const language = getLanguageFromFileName(selectedFile);
 
       editorRef.current = monaco.editor.create(containerRef.current!, {
@@ -104,7 +104,7 @@ export default function MonacoEditor({ selectedFile, openTabs, onFileSelect, onC
           }));
           
           // Mark file as having unsaved changes
-          if (currentContent !== fileData?.content) {
+          if (currentContent !== (fileData as any)?.content) {
             setUnsavedChanges(prev => new Set(prev).add(selectedFile));
           } else {
             setUnsavedChanges(prev => {
@@ -129,17 +129,17 @@ export default function MonacoEditor({ selectedFile, openTabs, onFileSelect, onC
         editorRef.current.dispose();
       }
     };
-  }, [isMonacoLoaded, selectedFile, fileData?.content]);
+  }, [isMonacoLoaded, selectedFile, (fileData as any)?.content]);
 
   // Update editor content when file data changes
   useEffect(() => {
     if (editorRef.current && fileData && selectedFile) {
       const currentContent = editorRef.current.getValue();
-      if (currentContent !== fileData.content && !editorContent[selectedFile]) {
-        editorRef.current.setValue(fileData.content);
+      if (currentContent !== (fileData as any).content && !editorContent[selectedFile]) {
+        editorRef.current.setValue((fileData as any).content);
         setEditorContent(prev => ({
           ...prev,
-          [selectedFile]: fileData.content,
+          [selectedFile]: (fileData as any).content,
         }));
       }
     }

@@ -163,19 +163,19 @@ export default function MiddlewareStatus({ isVisible, onClose }: MiddlewareStatu
                   <CardContent>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                       <div className="text-center">
-                        <p className="text-2xl font-bold text-blue-400">{auditStats.totalIntents}</p>
+                        <p className="text-2xl font-bold text-blue-400">{(auditStats as any)?.totalIntents || 0}</p>
                         <p className="text-xs rde-text-secondary">Total Intents</p>
                       </div>
                       <div className="text-center">
-                        <p className="text-2xl font-bold text-green-400">{auditStats.successfulExecutions}</p>
+                        <p className="text-2xl font-bold text-green-400">{(auditStats as any)?.successfulExecutions || 0}</p>
                         <p className="text-xs rde-text-secondary">Successful</p>
                       </div>
                       <div className="text-center">
-                        <p className="text-2xl font-bold text-red-400">{auditStats.rejectedIntents}</p>
+                        <p className="text-2xl font-bold text-red-400">{(auditStats as any)?.rejectedIntents || 0}</p>
                         <p className="text-xs rde-text-secondary">Rejected</p>
                       </div>
                       <div className="text-center">
-                        <p className="text-2xl font-bold text-yellow-400">{auditStats.pendingApprovals}</p>
+                        <p className="text-2xl font-bold text-yellow-400">{(auditStats as any)?.pendingApprovals || 0}</p>
                         <p className="text-xs rde-text-secondary">Pending</p>
                       </div>
                     </div>
@@ -184,14 +184,14 @@ export default function MiddlewareStatus({ isVisible, onClose }: MiddlewareStatu
               )}
 
               {/* Intent Types Breakdown */}
-              {auditStats?.intentTypeBreakdown && (
+              {(auditStats as any)?.intentTypeBreakdown && (
                 <Card className="rde-bg-primary rde-border">
                   <CardHeader>
                     <CardTitle>Intent Types</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-2">
-                      {Object.entries(auditStats.intentTypeBreakdown).map(([type, count]) => (
+                      {Object.entries((auditStats as any).intentTypeBreakdown).map(([type, count]) => (
                         <div key={type} className="flex items-center justify-between">
                           <span className="text-sm rde-text-primary capitalize">
                             {type.replace('_', ' ')}
