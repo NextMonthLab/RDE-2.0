@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "sourceMap": true,
+    "outDir": "../dist",
+    "rootDir": ".",
+    "strict": true,
+    "noEmit": false,
+    "declaration": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noUncheckedIndexedAccess": true
+  },
+  "include": [
+    "**/*.ts",
+    "../shared/**/*.ts",
+    "../middleware/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "../dist",
+    "../client"
+  ]
+}
