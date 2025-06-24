@@ -40,7 +40,7 @@ router.get('/queue', (req, res) => {
 });
 
 // Manual execution trigger (for testing)
-router.post('/execute', async (req, res): Promise<void> => {
+router.post('/execute', async (req, res) => {
   try {
     const { operation, targetPath, content } = req.body;
     
@@ -62,7 +62,7 @@ router.post('/execute', async (req, res): Promise<void> => {
 
     await executionEngine.queueApprovedIntent(event);
     
-    res.json({
+    return res.json({
       message: 'Execution queued successfully',
       event,
     });

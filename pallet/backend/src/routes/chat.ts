@@ -26,7 +26,7 @@ router.get('/messages', (req, res) => {
 });
 
 // Send chat message
-router.post('/message', async (req, res): Promise<void> => {
+router.post('/message', async (req, res) => {
   try {
     const { content, role = 'user', currentFile } = req.body;
     
@@ -97,7 +97,7 @@ ${middlewareResult.results.map(r => `- ${r.intent.type}: ${r.execution?.success 
       messages.splice(0, messages.length - 50);
     }
 
-    res.json({
+    return res.json({
       userMessage,
       assistantMessage,
       middlewareResult: {

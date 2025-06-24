@@ -43,13 +43,13 @@ export class AuditLogger {
       timestamp: new Date(),
       intent,
       validation,
-      execution,
       source: {
         sessionId: source?.sessionId || 'unknown',
         ...(source?.userId && { userId: source.userId }),
         ...(source?.chatMessage && { chatMessage: source.chatMessage.substring(0, 200) }),
       },
       outcome: this.determineOutcome(validation, execution),
+      ...(execution && { execution }),
     };
 
     await this.addEntry(entry);
