@@ -1,0 +1,119 @@
+Excellent.
+Here comes the full definitive Replit Palletizer Prompt for RDE 2.0 strict Docker compliance.
+
+⸻
+
+🟢 RDE 2.0 Palletizer: Final Replit Prompt
+
+⸻
+
+Prompt Title:
+💎 Strict Compile Palletizer — Full Hetzner-Ready Build
+
+⸻
+
+Prompt Instruction (to Replit agent):
+
+⸻
+
+You are preparing this app for Dockerized Hetzner deployment under the RDE 2.0 strict compliance model.
+This instance must follow a fully precompiled pipeline.
+
+✅ Build Steps:
+
+1️⃣ Backend Build (TypeScript):
+	•	Compile all backend TypeScript into:
+
+/pallet/backend/dist/
+
+	•	The source files are in:
+
+/pallet/backend/src/
+
+	•	Entry point must be:
+
+/pallet/backend/dist/index.js
+
+	•	All absolute paths inside built code must align to /app/pallet/backend/dist as used inside Docker.
+	•	Eliminate all import.meta.url, __dirname, or relative path logic that fails inside Docker context.
+
+⸻
+
+2️⃣ Frontend Build (if present):
+	•	Build full frontend (Vite, React, etc).
+	•	Output must be:
+
+/pallet/frontend/dist/
+
+	•	All frontend assets should use absolute static paths compatible with Docker /app/pallet/frontend/dist/.
+	•	Inject correct BASE path if required for serving inside container.
+
+⸻
+
+3️⃣ Package Files:
+	•	Ensure:
+
+/pallet/backend/package.json
+/pallet/backend/package-lock.json
+
+exist and include only the production dependencies needed for runtime.
+	•	Similarly:
+
+/pallet/frontend/package.json
+/pallet/frontend/package-lock.json
+
+for frontend builds.
+	•	Development-only dependencies (typescript, vite, eslint, etc) do NOT need to be installed inside Docker runtime.
+
+⸻
+
+4️⃣ Docker Preparation:
+
+✅ When build completes inside Replit:
+	•	You should be able to build Docker using:
+
+# No TypeScript build steps inside Docker
+
+# Stage 1: Copy backend
+COPY pallet/backend/package.json ./ 
+RUN npm ci --only=production
+COPY pallet/backend/dist ./backend/dist
+
+# Stage 2: Copy frontend
+COPY pallet/frontend/dist ./frontend/dist
+
+	•	No tsc, no vite, no npm run build required inside Docker.
+
+⸻
+
+5️⃣ Deployment Declaration:
+	•	Print at end of Replit build:
+
+✅ PALLET COMPILED: Docker-safe strict build complete. Ready for Hetzner.
+
+
+⸻
+
+Goal:
+This system will eliminate all Docker build context failures, remove dev dependencies from container builds, and fully stabilize Replit → GitHub → Hetzner pallets.
+
+⸻
+
+🔒 Strict Rule Reminder:
+	•	No files should reference dynamic file paths at runtime.
+	•	All file paths must assume absolute Docker layout.
+	•	Build outside Docker → Deploy inside Docker.
+
+⸻
+
+Done.
+
+⸻
+
+👉 Would you like me to also now generate:
+	•	✅ The updated Dockerfile (final form)
+	•	✅ The updated GitHub structure (for how this should look inside your repo)
+
+…so we fully lock in this standard?
+
+If you say YES FULL LOCK, we will finally cross into permanent RDE 2.0 territory.

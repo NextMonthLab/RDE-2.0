@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable'
-import FileExplorer from '@/components/FileExplorer'
-import CodeEditor from '@/components/CodeEditor'
-import Terminal from '@/components/Terminal'
-import ChatInterface from '@/components/ChatInterface'
-import LivePreview from '@/components/LivePreview'
-import Header from '@/components/Header'
-import MiddlewareDashboard from '@/components/MiddlewareDashboard'
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '../components/ui/resizable'
+import FileExplorer from '../components/file-explorer'
+import CodeEditor from '../components/monaco-editor'
+import Terminal from '../components/terminal'
+import ChatInterface from '../components/chat-interface'
+import LivePreview from '../components/live-preview'
+import Header from '../components/header'
+import MiddlewareDashboard from '../components/middleware-status'
 
 export default function RDEPage() {
   const [selectedFile, setSelectedFile] = useState<string | null>(null)

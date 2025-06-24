@@ -1,5 +1,5 @@
 import { Route, Switch } from 'wouter'
-import { Toaster } from '@/components/ui/toaster'
+import { Toaster } from './components/ui/toaster'
 import RDEPage from './pages/RDEPage'
 import NotFoundPage from './pages/NotFoundPage'
 
