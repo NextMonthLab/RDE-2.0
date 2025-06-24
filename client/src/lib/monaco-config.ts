@@ -4,13 +4,26 @@ import * as monaco from "monaco-editor";
 export const configureMonaco = () => {
   // Configure Monaco Environment for Web Workers
   (window as any).MonacoEnvironment = {
-    getWorkerUrl: function (_moduleId: string, label: string) {
-      return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
-        self.MonacoEnvironment = {
-          baseUrl: 'https://unpkg.com/monaco-editor@latest/min/'
-        };
-        importScripts('https://unpkg.com/monaco-editor@latest/min/vs/base/worker/workerMain.js');
-      `)}`;
+    getWorker: function (_workerId: string, label: string) {
+      switch (label) {
+        case 'json':
+        case 'css':
+        case 'scss':
+        case 'less':
+        case 'html':
+        case 'handlebars':
+        case 'razor':
+        case 'typescript':
+        case 'javascript':
+        default:
+          // Return a mock worker that doesn't break functionality
+          return {
+            postMessage: () => {},
+            terminate: () => {},
+            addEventListener: () => {},
+            removeEventListener: () => {}
+          };
+      }
     }
   };
 
