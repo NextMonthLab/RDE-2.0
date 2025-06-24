@@ -103,14 +103,14 @@ export interface ValidationResult {
 export interface ExecutionContext {
   intent: Intent;
   validation: ValidationResult;
-  user?: {
-    id: string;
-    permissions: string[];
-  };
   environment: {
     workingDirectory: string;
     nodeEnv: string;
     restrictions: string[];
+  };
+  user?: {
+    id: string;
+    permissions: string[];
   };
 }
 

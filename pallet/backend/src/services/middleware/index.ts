@@ -129,12 +129,12 @@ export class AgentBridge extends EventEmitter {
       const context: ExecutionContext = {
         intent,
         validation,
-        user: options.userId ? { id: options.userId, permissions: ['read', 'write'] } : undefined,
         environment: {
           workingDirectory: process.env.PROJECTS_PATH || '/app/projects',
           nodeEnv: process.env.NODE_ENV || 'development',
           restrictions: [],
         },
+        ...(options.userId && { user: { id: options.userId, permissions: ['read', 'write'] } }),
       };
 
       execution = await this.router.routeIntent(context);
@@ -161,11 +161,18 @@ export class AgentBridge extends EventEmitter {
         intent,
         validation,
         execution,
-        { sessionId, userId: options.userId }
+        { 
+          sessionId, 
+          ...(options.userId && { userId: options.userId })
+        }
       );
     }
 
-    return { intent, validation, execution };
+    return { 
+      intent, 
+      validation, 
+      ...(execution && { execution })
+    };
   }
 
   /**

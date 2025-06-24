@@ -40,7 +40,7 @@ router.get('/queue', (req, res) => {
 });
 
 // Manual execution trigger (for testing)
-router.post('/execute', async (req, res) => {
+router.post('/execute', async (req, res): Promise<void> => {
   try {
     const { operation, targetPath, content } = req.body;
     

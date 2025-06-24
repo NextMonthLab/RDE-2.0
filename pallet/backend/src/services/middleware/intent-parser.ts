@@ -189,8 +189,8 @@ export class IntentParser {
       operation,
       target: {
         path: path.startsWith('/') ? path : `/${path}`,
-        content,
         backup: operation === 'update',
+        ...(content && { content }),
       },
       validation: {
         fileType,
@@ -241,16 +241,15 @@ export class IntentParser {
       type: 'code_generation',
       target: {
         file: this.suggestFilePath(language, name),
-        component: isReact ? name : undefined,
+        ...(isReact && { component: name }),
       },
       requirements: {
         language,
-        framework: isReact ? 'react' : undefined,
         patterns: ['functional', 'modern'],
         tests: false,
+        ...(isReact && { framework: 'react' }),
       },
       context: {
-        existingCode: undefined,
         imports: isReact ? ['react'] : [],
         dependencies: [],
       },

@@ -46,8 +46,8 @@ export class AuditLogger {
       execution,
       source: {
         sessionId: source?.sessionId || 'unknown',
-        userId: source?.userId || undefined,
-        chatMessage: source?.chatMessage ? source.chatMessage.substring(0, 200) : undefined,
+        ...(source?.userId && { userId: source.userId }),
+        ...(source?.chatMessage && { chatMessage: source.chatMessage.substring(0, 200) }),
       },
       outcome: this.determineOutcome(validation, execution),
     };

@@ -26,7 +26,7 @@ router.get('/messages', (req, res) => {
 });
 
 // Send chat message
-router.post('/message', async (req, res) => {
+router.post('/message', async (req, res): Promise<void> => {
   try {
     const { content, role = 'user', currentFile } = req.body;
     
