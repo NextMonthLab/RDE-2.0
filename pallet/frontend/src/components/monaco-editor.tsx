@@ -9,12 +9,13 @@ import type { File } from "../shared/schema";
 
 interface MonacoEditorProps {
   selectedFile: string | null;
-  openTabs: string[];
-  onFileSelect: (filePath: string) => void;
-  onCloseTab: (filePath: string) => void;
+  openTabs?: string[];
+  onFileSelect?: (filePath: string) => void;
+  onCloseTab?: (filePath: string) => void;
+  onFileChange?: () => void;
 }
 
-export default function MonacoEditor({ selectedFile, openTabs, onFileSelect, onCloseTab }: MonacoEditorProps) {
+export default function MonacoEditor({ selectedFile, openTabs = [], onFileSelect, onCloseTab, onFileChange }: MonacoEditorProps) {
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMonacoLoaded, setIsMonacoLoaded] = useState(false);
@@ -183,7 +184,7 @@ export default function MonacoEditor({ selectedFile, openTabs, onFileSelect, onC
               className={`flex items-center space-x-2 px-4 py-2 border-r rde-border min-w-max cursor-pointer group transition-colors ${
                 isActive ? "rde-bg-primary border-b-2 border-blue-400" : "hover:rde-bg-accent"
               }`}
-              onClick={() => onFileSelect(tabPath)}
+              onClick={() => onFileSelect?.(tabPath)}
             >
               <span className="text-sm">{getFileName(tabPath)}</span>
               {hasUnsavedChanges && <span className="text-xs rde-text-secondary">●</span>}
@@ -193,7 +194,7 @@ export default function MonacoEditor({ selectedFile, openTabs, onFileSelect, onC
                 className="opacity-0 group-hover:opacity-100 h-4 w-4 p-0 hover:rde-bg-accent transition-all"
                 onClick={(e) => {
                   e.stopPropagation();
-                  onCloseTab(tabPath);
+                  onCloseTab?.(tabPath);
                 }}
               >
                 <X className="w-3 h-3" />

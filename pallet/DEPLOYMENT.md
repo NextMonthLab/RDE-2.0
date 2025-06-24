@@ -1,102 +1,155 @@
-# RDE v2.0 Hetzner Deployment Guide
+# RDE v2.0 Hetzner Deployment Pallet
 
-## Quick Deployment
+## Overview
 
-### 1. Prepare Hetzner VPS
+This is the production-ready RDE v2.0 Deployment Pallet with strict Docker compliance for Hetzner VPS deployment. The system follows a precompiled build pipeline where all TypeScript compilation happens outside the Docker container for maximum reliability and performance.
+
+## Build Architecture
+
+### ✅ Backend Build (`/pallet/backend/dist/`)
+- **Entry Point**: `/pallet/backend/dist/index.js`
+- **Compiled from**: `/pallet/backend/src/`
+- **Docker Path**: `/app/backend/dist/`
+- **Status**: ✅ COMPILED
+
+### ✅ Frontend Build (`/pallet/frontend/dist/`)
+- **Output**: Static production assets
+- **Compiled from**: `/pallet/frontend/src/`
+- **Docker Path**: `/app/frontend/dist/`
+- **Status**: ✅ COMPILED
+
+## Docker Compliance
+
+### Pre-Compilation Strategy
 ```bash
-# Update system
-apt update && apt upgrade -y
-apt install docker.io docker-compose git -y
-systemctl enable docker
-systemctl start docker
-
-# Clone repository
-git clone <your-repo-url>
-cd rdev2-hetzner-pallet
+# Build outside Docker in Replit
+cd pallet/backend && npm run build
+cd pallet/frontend && npm run build
 ```
 
-### 2. Configure Environment
-```bash
-# Copy and configure environment
-cp .env.example .env
-nano .env
+### Docker Runtime
+```dockerfile
+# No TypeScript compilation inside container
+COPY backend/dist ./backend/dist
+COPY frontend/dist ./frontend/dist
+CMD ["node", "./backend/dist/index.js"]
+```
 
-# Required variables:
-ANTHROPIC_API_KEY=sk-ant-api03-...
+## Environment Configuration
+
+### Production Environment Variables
+```env
 NODE_ENV=production
 PORT=5000
+FRONTEND_PATH=/app/frontend/dist
 ```
 
-### 3. Deploy with Docker
+### Directory Structure in Container
+```
+/app/
+├── backend/
+│   ├── dist/           # Compiled backend
+│   ├── node_modules/   # Production deps only
+│   └── package.json
+├── frontend/
+│   └── dist/           # Built frontend assets
+├── system/
+│   ├── build-protocol.json
+│   └── audit/          # Persistent volume
+└── projects/           # Persistent volume
+```
+
+## Deployment Process
+
+### 1. Replit Build Phase
 ```bash
-# Build and run
-docker-compose up -d
+# Backend compilation
+cd pallet/backend
+npm run build
 
-# Or build manually
-docker build -t rdev2-hetzner-pallet .
-docker run -d -p 5000:5000 \
-  -v $(pwd)/system/audit:/app/system/audit \
-  -v $(pwd)/projects:/app/projects \
-  --env-file .env \
-  rdev2-hetzner-pallet
+# Frontend compilation  
+cd pallet/frontend
+npm run build
 ```
 
-### 4. Verify Deployment
+### 2. Docker Build Phase
 ```bash
-# Check health
-curl http://localhost:5000/api/health
-
-# Check logs
-docker logs <container-id>
-
-# Check middleware status
-curl http://localhost:5000/api/middleware/status
+# Build container with pre-compiled assets
+docker build -t rde-v2-hetzner .
 ```
 
-## Production Checklist
-
-- [ ] Environment variables configured
-- [ ] SSL/TLS certificates installed (nginx/caddy)
-- [ ] Firewall configured (port 5000)
-- [ ] Backup strategy for audit logs
-- [ ] Log rotation configured
-- [ ] Monitoring alerts set up
-
-## Architecture
-
-- **Frontend**: React 18 + TypeScript served statically
-- **Backend**: Node.js + Express API server
-- **Middleware**: AI-Governed Agent Bridge v2.0
-- **Execution**: Event-driven file operations engine
-- **Storage**: Persistent volumes for logs and projects
-
-## API Endpoints
-
-- `GET /api/health` - Health check
-- `GET /api/middleware/status` - Middleware status
-- `GET /api/execution/stats` - Execution statistics
-- `POST /api/chat/message` - AI chat interface
-- `GET/POST /api/files/*` - File operations
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Permission errors**: Ensure proper volume permissions
-2. **API key issues**: Verify ANTHROPIC_API_KEY is set
-3. **Port conflicts**: Check if port 5000 is available
-4. **Memory issues**: Ensure VPS has adequate RAM (2GB+)
-
-### Logs Location
-- Application: `docker logs <container>`
-- Audit: `/app/system/audit/`
-- File operations: Middleware dashboard
-
-## Updates
-
-To update the deployment:
+### 3. Hetzner Deployment
 ```bash
-git pull
-docker-compose down
-docker-compose up -d --build
+# Deploy to Hetzner VPS
+docker run -d \
+  -p 5000:5000 \
+  -v /data/projects:/app/projects \
+  -v /data/audit:/app/system/audit \
+  --name rde-v2 \
+  rde-v2-hetzner
 ```
+
+## Health Monitoring
+
+### Health Check Endpoint
+```
+GET /api/health
+```
+
+### Expected Response
+```json
+{
+  "status": "healthy",
+  "timestamp": "2025-06-24T06:50:00.000Z",
+  "version": "2.0.0",
+  "environment": "production",
+  "middleware": "active",
+  "executionEngine": "active"
+}
+```
+
+## Features Included
+
+### Core RDE v2.0 Components
+- ✅ File Management System with database persistence
+- ✅ Monaco Code Editor with multi-tab support
+- ✅ Terminal interface with WebSocket connectivity
+- ✅ AI Chat Assistant with Claude integration
+- ✅ Live Preview capabilities
+- ✅ Agent Bridge Middleware v2.0 with governance
+- ✅ Execution Engine v1.0 for file operations
+
+### Production Security
+- ✅ Helmet security headers
+- ✅ CORS configuration
+- ✅ Non-root container user
+- ✅ Health check monitoring
+- ✅ Graceful shutdown handling
+- ✅ Error boundaries and logging
+
+## Strict Compliance Achieved
+
+### ✅ TypeScript Compliance
+- All error handling with proper unknown typing
+- Strict nullability checks enforced
+- Production-ready without compilation warnings
+
+### ✅ Docker Compliance  
+- No import.meta.dirname or dynamic paths
+- Absolute paths for container layout
+- Production dependencies only
+- Multi-stage optimized builds
+
+### ✅ Hetzner Ready
+- Port 5000 external configuration
+- Volume persistence for audit and projects
+- Health checks for monitoring
+- Resource-optimized Alpine base
+
+## Deployment Status
+
+```
+✅ PALLET COMPILED: Docker-safe strict build complete. Ready for Hetzner.
+```
+
+The RDE v2.0 system is now production-ready for deployment to Hetzner VPS infrastructure with complete AI governance, file management, and development environment capabilities.

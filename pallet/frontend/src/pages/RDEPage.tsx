@@ -25,7 +25,7 @@ export default function RDEPage() {
           <ResizablePanel defaultSize={20} minSize={15}>
             <div className="h-full border-r bg-muted/50">
               <FileExplorer 
-                onSelectFile={setSelectedFile}
+                onFileSelect={setSelectedFile}
                 selectedFile={selectedFile}
               />
             </div>
