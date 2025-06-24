@@ -75,7 +75,7 @@ router.post('/process', async (req, res) => {
       autoExecute: true,
     });
 
-    res.json(result);
+    return res.json(result);
   } catch (error) {
     console.error('[Middleware] Error processing intent:', error);
     return res.status(500).json({ error: 'Failed to process intent' });

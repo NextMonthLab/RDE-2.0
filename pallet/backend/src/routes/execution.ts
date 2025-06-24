@@ -11,7 +11,7 @@ const router = express.Router();
 router.get('/stats', (req, res) => {
   try {
     const stats = executionEngine.getStats();
-    res.json({
+    return res.json({
       ...stats,
       workspaceRoot: executionEngine.getWorkspaceRoot(),
       connectedClients: 0, // Placeholder for WebSocket client count
@@ -19,7 +19,7 @@ router.get('/stats', (req, res) => {
     });
   } catch (error) {
     console.error('[Execution] Error getting stats:', error);
-    res.status(500).json({ error: 'Failed to get execution statistics' });
+    return res.status(500).json({ error: 'Failed to get execution statistics' });
   }
 });
 

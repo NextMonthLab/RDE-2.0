@@ -24,7 +24,7 @@ router.get('/', async (req, res) => {
 // Get file content
 router.get('*', async (req, res) => {
   try {
-    const filePath = req.params['0'];
+    const filePath = (req.params as any)['0'];
     const safePath = resolveSafePath(filePath, workspaceRoot);
     
     const stats = await fs.stat(safePath);
@@ -52,7 +52,7 @@ router.get('*', async (req, res) => {
 // Create or update file
 router.post('*', async (req, res) => {
   try {
-    const filePath = req.params['0'];
+    const filePath = (req.params as any)['0'];
     const { content } = req.body;
     const safePath = resolveSafePath(filePath, workspaceRoot);
     
@@ -77,7 +77,7 @@ router.post('*', async (req, res) => {
 // Delete file
 router.delete('*', async (req, res) => {
   try {
-    const filePath = req.params['0'];
+    const filePath = (req.params as any)['0'];
     const safePath = resolveSafePath(filePath, workspaceRoot);
     
     const stats = await fs.stat(safePath);

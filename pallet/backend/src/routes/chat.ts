@@ -22,7 +22,7 @@ const anthropic = new Anthropic({
 
 // Get chat messages
 router.get('/messages', (req, res) => {
-  res.json(messages);
+  return res.json(messages);
 });
 
 // Send chat message
