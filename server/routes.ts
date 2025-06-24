@@ -195,7 +195,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         switch (message.type) {
           case 'terminal:create':
             terminalSessionId = message.sessionId || `session_${Date.now()}`;
-            const session = terminalService.createSession(terminalSessionId, message.cwd || process.cwd());
+            const session = terminalService.createSession(terminalSessionId ?? '', message.cwd || process.cwd());
             
             // Forward stdout
             session.process.stdout?.on('data', (data) => {

@@ -101,8 +101,9 @@ export class ExecutionRouter {
             startTime
           );
       }
-    } catch (error) {
-      return this.createErrorResult(intent, error.message, startTime);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      return this.createErrorResult(intent, errorMessage, startTime);
     }
   }
 

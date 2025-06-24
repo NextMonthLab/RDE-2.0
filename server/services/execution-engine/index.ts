@@ -172,7 +172,8 @@ export class ExecutionEngine extends EventEmitter {
         timestamp: new Date(),
       };
 
-      console.error(`[ExecutionEngine] ❌ Failed to execute ${event.operation} on ${event.targetPath}: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.error(`[ExecutionEngine] ❌ Failed to execute ${event.operation} on ${event.targetPath}: ${errorMessage}`);
       
       // Emit error event
       this.emit('execution-error', result);
@@ -350,7 +351,7 @@ export class ExecutionEngine extends EventEmitter {
       await fs.mkdir(dirPath, { recursive: true });
     } catch (error) {
       // Directory might already exist
-      if (error.code !== 'EEXIST') {
+      if (error instanceof Error && (error as any).code !== 'EEXIST') {
         throw error;
       }
     }

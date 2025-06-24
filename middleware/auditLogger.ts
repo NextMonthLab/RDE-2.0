@@ -124,7 +124,7 @@ export class AuditLogger {
   /**
    * Determine outcome based on validation and execution results
    */
-  private determineOutcome(validation: ValidationResult, execution?: ExecutionResult): string {
+  private determineOutcome(validation: ValidationResult, execution?: ExecutionResult): 'processed' | 'rejected' | 'failed' | 'pending_approval' {
     if (!validation.isValid) {
       return 'rejected';
     }

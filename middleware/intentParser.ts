@@ -54,8 +54,9 @@ export class IntentParser {
       // Extract intents from code blocks
       intents.push(...this.extractCodeBlockIntents(message));
 
-    } catch (error) {
-      parseErrors.push(`Parse error: ${error.message}`);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      parseErrors.push(`Parse error: ${errorMessage}`);
     }
 
     const parseTime = Date.now() - startTime;
