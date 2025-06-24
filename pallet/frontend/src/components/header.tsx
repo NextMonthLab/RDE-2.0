@@ -4,9 +4,11 @@ import { Settings, Cpu } from 'lucide-react';
 
 interface HeaderProps {
   onShowMiddleware?: () => void;
+  onToggleMiddleware?: () => void;
+  middlewareActive?: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ onShowMiddleware }) => {
+const Header: React.FC<HeaderProps> = ({ onShowMiddleware, onToggleMiddleware, middlewareActive }) => {
   return (
     <header className="h-12 border-b rde-border rde-bg-primary flex items-center justify-between px-4">
       <div className="flex items-center space-x-4">

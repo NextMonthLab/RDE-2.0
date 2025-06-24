@@ -8,6 +8,7 @@ import type { File as FileType } from "../shared/schema";
 
 interface FileExplorerProps {
   onFileSelect: (filePath: string) => void;
+  selectedFile: string | null;
 }
 
 interface TreeNode extends FileType {

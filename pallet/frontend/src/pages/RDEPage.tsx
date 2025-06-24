@@ -68,7 +68,10 @@ export default function RDEPage() {
                   <ResizableHandle />
                   {/* Middleware Dashboard */}
                   <ResizablePanel defaultSize={50}>
-                    <MiddlewareDashboard />
+                    <MiddlewareDashboard 
+                      isVisible={showMiddleware}
+                      onClose={() => setShowMiddleware(false)}
+                    />
                   </ResizablePanel>
                 </>
               )}

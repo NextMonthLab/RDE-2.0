@@ -3,6 +3,7 @@ export interface File {
   id: string;
   name: string;
   path: string;
+  parentPath?: string;
   content?: string;
   size?: number;
   type: 'file' | 'directory';
