@@ -95,14 +95,15 @@ async function startServer() {
       return next(err);
     }
     
-    res.status(err.status || 500).json({
+    const statusCode = typeof err.status === 'number' ? err.status : 500;
+    res.status(statusCode).json({
       error: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error',
       timestamp: new Date().toISOString(),
     });
   });
 
   // Start server
-  server.listen(port, '0.0.0.0', () => {
+  server.listen(Number(port), '0.0.0.0', () => {
     console.log(`[Server] RDE v2.0 Hetzner Pallet running on port ${port}`);
     console.log(`[Server] Environment: ${process.env.NODE_ENV || 'development'}`);
     console.log(`[Server] Frontend: ${process.env.NODE_ENV === 'production' ? 'Static' : 'Vite Dev Server'}`);
