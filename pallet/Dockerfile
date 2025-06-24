@@ -48,7 +48,7 @@ RUN npm ci --only=production --workspace=backend && npm cache clean --force
 
 # Copy built applications
 COPY --from=build --chown=nodejs:nodejs /app/frontend/dist ./frontend/dist
-COPY --from=build --chown=nodejs:nodejs /app/backend/dist ./backend/dist
+COPY --from=build --chown=nodejs:nodejs /app/backend/dist ./dist
 COPY --from=build --chown=nodejs:nodejs /app/system ./system
 
 # Create audit directory with proper permissions
@@ -74,4 +74,4 @@ EXPOSE 5000
 VOLUME ["/app/system/audit", "/app/projects"]
 
 # Start the application
-CMD ["node", "backend/dist/index.js"]
+CMD ["node", "dist/index.js"]

@@ -3,7 +3,6 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import { createServer } from 'http';
 import { WebSocketServer } from 'ws';
 
@@ -12,9 +11,6 @@ import { setupWebSocket } from './services/websocket.js';
 import { initializeMiddleware } from './services/middleware/index.js';
 import { initializeExecutionEngine } from './services/execution-engine/index.js';
 import { createDirectories } from './utils/filesystem.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 async function startServer() {
   const app = express();
@@ -71,7 +67,7 @@ async function startServer() {
 
   // Serve static files in production
   if (process.env.NODE_ENV === 'production') {
-    const frontendPath = path.resolve(__dirname, '../../frontend/dist');
+    const frontendPath = '/app/frontend/dist';
     app.use(express.static(frontendPath));
     
     app.get('*', (req, res) => {
