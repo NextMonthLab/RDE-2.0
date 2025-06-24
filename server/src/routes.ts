@@ -5,7 +5,7 @@ import { storage } from "./storage";
 import { fileService } from "./services/fileService";
 import { terminalService } from "./services/terminalService";
 import { chatService } from "./services/chatService";
-import { insertFileSchema, insertChatMessageSchema } from "@shared/schema";
+import { insertFileSchema, insertChatMessageSchema } from "../../shared/schema.js";
 
 // Helper function to create middleware summary
 function createMiddlewareSummary(middlewareResult: any): string {

@@ -1,4 +1,4 @@
-import { users, files, chatMessages, type User, type InsertUser, type File, type InsertFile, type ChatMessage, type InsertChatMessage } from "@shared/schema";
+import { users, files, chatMessages, type User, type InsertUser, type File, type InsertFile, type ChatMessage, type InsertChatMessage } from "../../shared/schema.js";
 
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
