@@ -120,11 +120,20 @@ export class AgentBridge extends EventEmitter {
           summary.rejectedIntents++;
         }
 
-      } catch (error) {
+      } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         const errorResult = {
           intent,
-          validation: { isValid: false, errors: [error.message] },
-          error: error.message,
+          validation: { 
+            isValid: false, 
+            intent,
+            appliedRules: [],
+            errors: [errorMessage],
+            warnings: [],
+            modifications: {},
+            requiresApproval: false,
+          },
+          error: errorMessage,
         };
         
         results.push(errorResult);

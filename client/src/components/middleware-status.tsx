@@ -74,25 +74,25 @@ export default function MiddlewareStatus({ isVisible, onClose }: MiddlewareStatu
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="text-center">
                       <div className={`w-3 h-3 rounded-full mx-auto mb-2 ${
-                        status?.initialized ? 'bg-green-500' : 'bg-red-500'
+                        (status as any)?.initialized ? 'bg-green-500' : 'bg-red-500'
                       }`}></div>
                       <p className="text-xs rde-text-secondary">Initialized</p>
                     </div>
                     <div className="text-center">
                       <div className={`w-3 h-3 rounded-full mx-auto mb-2 ${
-                        status?.components?.intentParser ? 'bg-green-500' : 'bg-gray-500'
+                        (status as any)?.components?.intentParser ? 'bg-green-500' : 'bg-gray-500'
                       }`}></div>
                       <p className="text-xs rde-text-secondary">Intent Parser</p>
                     </div>
                     <div className="text-center">
                       <div className={`w-3 h-3 rounded-full mx-auto mb-2 ${
-                        status?.components?.governance ? 'bg-green-500' : 'bg-gray-500'
+                        (status as any)?.components?.governance ? 'bg-green-500' : 'bg-gray-500'
                       }`}></div>
                       <p className="text-xs rde-text-secondary">Governance</p>
                     </div>
                     <div className="text-center">
                       <div className={`w-3 h-3 rounded-full mx-auto mb-2 ${
-                        status?.components?.execution ? 'bg-green-500' : 'bg-gray-500'
+                        (status as any)?.components?.execution ? 'bg-green-500' : 'bg-gray-500'
                       }`}></div>
                       <p className="text-xs rde-text-secondary">Execution</p>
                     </div>
@@ -101,12 +101,12 @@ export default function MiddlewareStatus({ isVisible, onClose }: MiddlewareStatu
               </Card>
 
               {/* Pending Approvals */}
-              {approvals.length > 0 && (
+              {Array.isArray(approvals) && approvals.length > 0 && (
                 <Card className="rde-bg-primary rde-border">
                   <CardHeader>
                     <CardTitle className="flex items-center space-x-2">
                       <Clock className="w-5 h-5 text-yellow-500" />
-                      <span>Pending Approvals ({approvals.length})</span>
+                      <span>Pending Approvals ({Array.isArray(approvals) ? approvals.length : 0})</span>
                     </CardTitle>
                     <CardDescription>
                       AI-generated intents requiring manual approval
@@ -114,7 +114,7 @@ export default function MiddlewareStatus({ isVisible, onClose }: MiddlewareStatu
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
-                      {approvals.slice(0, 5).map((approval: any, index: number) => (
+                      {Array.isArray(approvals) && approvals.slice(0, 5).map((approval: any, index: number) => (
                         <div key={index} className="flex items-center justify-between p-3 rde-bg-accent rounded">
                           <div className="flex-1">
                             <p className="text-sm font-medium rde-text-primary">
