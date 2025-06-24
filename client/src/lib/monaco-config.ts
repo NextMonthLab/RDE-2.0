@@ -2,6 +2,18 @@ import * as monaco from "monaco-editor";
 
 // Monaco Editor Configuration
 export const configureMonaco = () => {
+  // Configure Monaco Environment for Web Workers
+  (window as any).MonacoEnvironment = {
+    getWorkerUrl: function (_moduleId: string, label: string) {
+      return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
+        self.MonacoEnvironment = {
+          baseUrl: 'https://unpkg.com/monaco-editor@latest/min/'
+        };
+        importScripts('https://unpkg.com/monaco-editor@latest/min/vs/base/worker/workerMain.js');
+      `)}`;
+    }
+  };
+
   // Set the theme
   monaco.editor.defineTheme("rde-dark", {
     base: "vs-dark",

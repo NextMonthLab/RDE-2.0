@@ -4,7 +4,8 @@ export default {
   darkMode: ["class"],
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
-    "./src/index.html"
+    "./src/index.html",
+    "./src/components/**/*.{js,jsx,ts,tsx}"
   ],
   theme: {
     extend: {
