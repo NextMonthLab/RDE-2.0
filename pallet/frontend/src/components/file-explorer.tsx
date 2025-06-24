@@ -4,7 +4,7 @@ import { ChevronDown, ChevronRight, File, Folder, FolderOpen, Plus, RefreshCw } 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { apiRequest } from "@/lib/queryClient";
-import type { File as FileType } from "@shared/schema";
+import type { File as FileType } from "../shared/schema";
 
 interface FileExplorerProps {
   onFileSelect: (filePath: string) => void;

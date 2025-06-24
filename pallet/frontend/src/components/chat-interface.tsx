@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { apiRequest } from "@/lib/queryClient";
-import type { ChatMessage } from "@shared/schema";
+import type { ChatMessage } from "../shared/schema";
 
 interface ChatInterfaceProps {
   currentFile?: string | null;

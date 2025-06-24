@@ -5,7 +5,7 @@ import { X, Save, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { configureMonaco, getLanguageFromFileName } from "@/lib/monaco-config";
 import { apiRequest } from "@/lib/queryClient";
-import type { File } from "@shared/schema";
+import type { File } from "../shared/schema";
 
 interface MonacoEditorProps {
   selectedFile: string | null;
