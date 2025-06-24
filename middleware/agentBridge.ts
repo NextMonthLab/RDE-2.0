@@ -84,7 +84,17 @@ export class AgentBridge extends EventEmitter {
     // Step 1: Parse intents from chat message
     const parsed = this.config.enableIntentParsing 
       ? IntentParser.parseChatMessage(message, sessionId)
-      : { originalMessage: message, intents: [], confidence: 0, parseErrors: [], metadata: {} };
+      : { 
+          originalMessage: message, 
+          intents: [], 
+          confidence: 0, 
+          parseErrors: [], 
+          metadata: {
+            modelUsed: 'none',
+            parseTime: 0,
+            intentCount: 0,
+          } 
+        };
 
     const results: any[] = [];
     const summary = {
@@ -174,7 +184,15 @@ export class AgentBridge extends EventEmitter {
     // Step 1: Validate intent
     const validation = this.config.enableGovernance
       ? await this.validator.validateIntent(intent)
-      : { isValid: true, appliedRules: [], errors: [], warnings: [], modifications: {}, requiresApproval: false };
+      : { 
+          isValid: true, 
+          intent,
+          appliedRules: [], 
+          errors: [], 
+          warnings: [], 
+          modifications: {}, 
+          requiresApproval: false 
+        };
 
     let execution: ExecutionResult | undefined;
 
