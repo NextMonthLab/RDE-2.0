@@ -167,7 +167,7 @@ export class ExecutionEngine extends EventEmitter {
         intentId: event.intentId,
         operation: event.operation,
         targetPath: event.targetPath,
-        error: error.message,
+        error: error instanceof Error ? error.message : 'Unknown error',
         duration: Date.now() - startTime,
         timestamp: new Date(),
       };

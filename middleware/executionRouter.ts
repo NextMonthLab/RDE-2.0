@@ -158,7 +158,6 @@ export class ExecutionRouter {
         if (target.newPath) {
           await fileService.updateFileInStorage(target.path, {
             name: this.getFileName(target.newPath),
-            path: target.newPath,
           });
           affectedFiles.push(target.path, target.newPath);
         }

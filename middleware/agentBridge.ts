@@ -213,12 +213,13 @@ export class AgentBridge extends EventEmitter {
       
       // Emit approved intent event for Execution Engine
       if (execution.success && (intent.type === 'file_operation' || intent.type === 'code_generation')) {
+        const intentAny = intent as any;
         this.emit('intent-approved', {
           intentId: intent.id,
-          operation: intent.operation || 'create',
-          targetPath: intent.target?.file || intent.target?.path,
-          content: intent.target?.content,
-          newPath: intent.target?.newPath,
+          operation: intentAny.operation || 'create',
+          targetPath: intentAny.target?.file || intentAny.target?.path,
+          content: intentAny.target?.content,
+          newPath: intentAny.target?.newPath,
           timestamp: new Date(),
           userId: options.userId,
           sessionId,
@@ -267,7 +268,15 @@ export class AgentBridge extends EventEmitter {
         throw new Error(`Intent validation failed: ${validation.errors.join(', ')}`);
       }
     } else {
-      validation = { isValid: true, appliedRules: [], errors: [], warnings: [], modifications: {}, requiresApproval: false };
+      validation = { 
+        isValid: true, 
+        intent,
+        appliedRules: [], 
+        errors: [], 
+        warnings: [], 
+        modifications: {}, 
+        requiresApproval: false 
+      };
     }
 
     // Create execution context
