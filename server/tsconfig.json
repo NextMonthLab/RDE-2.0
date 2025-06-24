@@ -8,7 +8,7 @@
     "allowJs": true,
     "sourceMap": true,
     "outDir": "../dist",
-    "rootDir": ".",
+    "rootDir": "./src",
     "strict": true,
     "noEmit": false,
     "declaration": true,
@@ -19,7 +19,7 @@
     "noUncheckedIndexedAccess": true
   },
   "include": [
-    "**/*.ts",
+    "src/**/*.ts",
     "../shared/**/*.ts",
     "../middleware/**/*.ts"
   ],
